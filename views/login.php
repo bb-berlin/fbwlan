@@ -1,13 +1,15 @@
 <?php echo $head; ?>
+
     <div class="pure-g centered-row">
        <div class="pure-u-1 pure-u-md-1-2">
         <div class="l-box">
         <p> <?php
-            echo _('We offer free WLAN.');
-            echo ' ';
-            echo _('We\'d like to ask you to return the favor and check in to our location on Facebook.');
-            echo ' ';
-            echo _('So, let your friends know you\'re here and start surfing the web!');
+			echo $_SESSION['fbtext'];
+            //echo _('We offer free WLAN.');
+            //echo ' ';
+            //echo _('We\'d like to ask you to return the favor and check in to our location on Facebook.');
+            //echo ' ';
+            //echo _('So, let your friends know you\'re here and start surfing the web!');
             ?>
         </p>
         </div>
@@ -22,13 +24,18 @@
             </div>
         </div>
     </div>
+<?php
+if ($_SESSION['acavalible'] == true)
+{
+	?>
     <div class="pure-g centered-row">
         <div class="pure-u-1 pure-u-md-1-2">
             <div class="l-box">
                 <p> <?php
-                    echo _('It\'s ok if you do not want to use Facebook.');
-                    echo ' ';
-                    echo _('Simply ask the staff at our location for the access code and enter it below.');
+					echo $_SESSION['actext'];
+                    //echo _('It\'s ok if you do not want to use Facebook.');
+                    //echo ' ';
+                    //echo _('Simply ask the staff at our location for the access code and enter it below.');
                     ?>
                 </p>
             </div>
@@ -37,6 +44,8 @@
             <?php echo $access_code_widget ?>
         </div>
     </div>
-
+<?php
+}
+?>
 
 <?php echo $foot; ?>

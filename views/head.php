@@ -5,6 +5,12 @@
         <link rel="stylesheet" href="<?php echo $my_url; ?>/static/grids-responsive-min.css">
         <link rel="stylesheet" href="<?php echo $my_url; ?>/static/fontawesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php echo $my_url; ?>/static/my.css">
+		<link rel="stylesheet" href="<?php echo $my_url.$_SESSION['style']; ?>">
+		
+		<link rel="stylesheet" href="<?php
+		//echo $my_url.$_SESSION['style']; 
+		?>">
+		
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php echo $title; ?></title>
     </head>
@@ -17,7 +23,3 @@
             <img class="pure-img" src="<?php echo $my_url; ?>static/logo.jpg"/>
         </div>
     </div>
-
-
-
-

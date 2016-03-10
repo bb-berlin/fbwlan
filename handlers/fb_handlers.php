@@ -304,6 +304,35 @@ function handle_login() {
     if (!is_session_valid()) {
         Flight::error(new Exception('Gateway parameters not set in login handler!'));
     }
+	// Add for costumization files
+	$folder = "customization/".$_SESSION['gw_id'];
+	if (is_file($folder."/style.css"))
+	{
+		$_SESSION['style'] = $folder."/style.css";
+	}
+	else
+	{
+		$_SESSION['style'] = "customization/default/style.css";
+	}
+	if (is_file($folder."/data.json"))
+	{
+		$_SESSION['datafile'] = $folder."/data.json";
+	}
+	else
+	{
+		$_SESSION['datafile'] = "customization/default/data.json";
+	}	
+	
+	$json_file = file_get_contents($_SESSION['datafile']);
+	$jfo = json_decode($json_file);
+	
+	$_SESSION['fbtext'] = $jfo->fbtext;
+	$_SESSION['acavalible'] = $jfo->acavalible;
+	if ($_SESSION['acavalible'] == true)
+	{
+		$_SESSION['actext'] = $jfo->actext;
+	}
+	
     render_boilerplate();
     fblogin();
 }
