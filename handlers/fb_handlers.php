@@ -198,7 +198,7 @@ function handle_checkin() {
     $session = new FacebookSession($token);
     $message = Flight::request()->query->message;
 
-    $config = array(place => PAGE_ID);
+    $config = array('place' => PAGE_ID);
     if (! empty($message)) {
         $config['message'] = $message;
     }
@@ -322,6 +322,14 @@ function handle_login() {
 	{
 		$_SESSION['datafile'] = "customization/default/data.json";
 	}	
+	if (is_file($folder."/background.jpg"))
+	{
+		$_SESSION['backgroundimg'] = MY_URL . $folder."/background.jpg";
+	}
+	else
+	{
+		$_SESSION['backgroundimg'] = MY_URL . "customization/default/background.jpg";
+	}
 	
 	$json_file = file_get_contents($_SESSION['datafile']);
 	$jfo = json_decode($json_file);
@@ -332,7 +340,6 @@ function handle_login() {
 	{
 		$_SESSION['actext'] = $jfo->actext;
 	}
-	
     render_boilerplate();
     fblogin();
 }

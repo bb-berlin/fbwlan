@@ -2,7 +2,7 @@ AddDefaultCharset UTF-8
 RewriteEngine On
 # RewriteBase / is required to prevent endless internal redirects
 # Note: http://stackoverflow.com/a/12106419
-RewriteBase /
+RewriteBase /fbwlan2
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 #RewriteCond %{REQUEST_URI} !=/index.php
