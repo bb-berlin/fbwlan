@@ -6,7 +6,8 @@
         <link rel="stylesheet" href="<?php echo $my_url; ?>/static/fontawesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="<?php echo $my_url; ?>/static/my.css">
 		<link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
-		<?php if (isset($_SESSION['style']))
+		<?php 
+		if (isset($_SESSION['style']))
 		{?>
 			<link rel="stylesheet" href="<?php //echo $my_url.$_SESSION['style']; ?>">
 		<?php 
@@ -36,6 +37,11 @@
         <div class="pure-u-1">
             <h1><?php echo $title; ?></h1>
             <!-- .pure-img makes images responsive -->
-            <img class="pure-img" src="<?php echo $my_url; ?>static/logo.jpg"/>
+			<?php
+			if (isset($_SESSION['backgroundimg']))
+			{?>
+			<img class="pure-img" src="<?php echo $_SESSION['logoimg'] ?>"/>
+			<?php } ?>
+            
         </div>
     </div>

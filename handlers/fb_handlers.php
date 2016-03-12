@@ -330,16 +330,37 @@ function handle_login() {
 	{
 		$_SESSION['backgroundimg'] = MY_URL . "customization/default/background.jpg";
 	}
-	
-	$json_file = file_get_contents($_SESSION['datafile']);
-	$jfo = json_decode($json_file);
-	
-	$_SESSION['fbtext'] = $jfo->fbtext;
-	$_SESSION['acavalible'] = $jfo->acavalible;
-	if ($_SESSION['acavalible'] == true)
+	if (is_file($folder."/background.jpg"))
 	{
-		$_SESSION['actext'] = $jfo->actext;
+		$_SESSION['logoimg'] = MY_URL . $folder."/logo.jpg";
 	}
+	else
+	{
+		$_SESSION['logoimg'] = MY_URL . "customization/default/logo.jpg";
+	}
+	
+	if (isset($_SESSION['datafile']))
+	{
+		$json_file = file_get_contents($_SESSION['datafile']);
+		$jfo = json_decode($json_file);
+		if (!isset($jfo)) 
+			Flight::error(new Exception($_SESSION['datafile'] . " is currupted, check if it is valid json file."));
+		else
+		{
+			$_SESSION['fbtext'] = $jfo->fbtext;
+			$_SESSION['acavalible'] = $jfo->acavalible;
+			if ($_SESSION['acavalible'] == true)
+			{
+				$_SESSION['actext'] = $jfo->actext;
+			}
+		}
+	}
+	else
+	{
+		Flight::error(new Exception('Gateway parameters not set in login handler!'));
+	}
+	
+	
     render_boilerplate();
     fblogin();
 }
