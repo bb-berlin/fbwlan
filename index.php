@@ -67,6 +67,7 @@ Flight::route('/login', 'handle_login');
 Flight::route('/fb_callback', 'handle_fb_callback');
 Flight::route('/checkin', 'handle_checkin');
 Flight::route('/access_code', 'handle_access_code');
+Flight::route('/skip', 'handle_skip');
 Flight::route('/privacy', 'handle_privacy');
 Flight::route('/rerequest_permission/', 'handle_rerequest_permission');
 

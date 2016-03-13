@@ -239,9 +239,11 @@ function fblogin() {
     $scope = array('publish_actions');
     $fb_login_url = $helper->getLoginUrl($scope);
     $code_login_url = MY_URL . 'access_code/';
+    $skip_login_url = MY_URL . 'skip/';
     Flight::render('login', array(
         'fburl' => $fb_login_url,
-        'codeurl' =>  $code_login_url
+        'codeurl' =>  $code_login_url,
+	'skipurl' => $skip_login_url
         ));
 
 }
@@ -258,7 +260,7 @@ function handle_access_code() {
         Flight::render('denied_code', array(
             'msg' => _('No access code sent.'),
         ));
-    } else if ($code != ACCESS_CODE) {
+    } else if ($code != $_SESSION['accode'] ){//ACCESS_CODE) {
         Flight::render('denied_code', array(
             'msg' => _('Wrong access code.'),
         ));
@@ -266,6 +268,34 @@ function handle_access_code() {
         login_success();
     }
 }
+
+function handle_skip() {
+
+    render_boilerplate();
+    $request = Flight::request();
+    
+    if (isset($_SESSION['accode']))
+    {
+    	if ($_SESSION['skipavalible'])
+	{
+		login_success();
+	}
+	else
+	{
+		Flight::render('denied_skip', array(
+            	'msg' => _('&Uuml;berspringen ist f&uuml;r diesen Zugang nicht erlaubt.'),
+        	));
+
+	}
+    }
+    else
+    {     
+        Flight::render('denied_skip', array(
+            'msg' => _('&Uuml;berspringen ist f&uuml;r diesen Zugang nicht erlaubt.'),
+        ));
+    }
+}
+
 
 function is_session_valid() {
     if (!(empty($_SESSION['gw_address']) || empty($_SESSION['gw_port']) || empty($_SESSION['gw_id']))) {
@@ -330,13 +360,13 @@ function handle_login() {
 	{
 		$_SESSION['backgroundimg'] = MY_URL . "customization/default/background.jpg";
 	}
-	if (is_file($folder."/background.jpg"))
+	if (is_file($folder."/logo.png"))
 	{
-		$_SESSION['logoimg'] = MY_URL . $folder."/logo.jpg";
+		$_SESSION['logoimg'] = MY_URL . $folder."/logo.png";
 	}
 	else
 	{
-		$_SESSION['logoimg'] = MY_URL . "customization/default/logo.jpg";
+		$_SESSION['logoimg'] = MY_URL . "customization/default/logo.png";
 	}
 	
 	if (isset($_SESSION['datafile']))
@@ -347,11 +377,24 @@ function handle_login() {
 			Flight::error(new Exception($_SESSION['datafile'] . " is currupted, check if it is valid json file."));
 		else
 		{
-			$_SESSION['fbtext'] = $jfo->fbtext;
+			$_SESSION['titletext'] = $jfo->titletext;
+			$_SESSION['fbavalible'] = $jfo->fbavalible;
+			if ($_SESSION['fbavalible'])
+			{
+				$_SESSION['fbtext'] = $jfo->fbtext;
+			}
 			$_SESSION['acavalible'] = $jfo->acavalible;
 			if ($_SESSION['acavalible'] == true)
 			{
 				$_SESSION['actext'] = $jfo->actext;
+				$_SESSION['accode'] = $jfo->accode;
+
+			}
+			$_SESSION['skipavalible'] = $jfo->skipavalible;
+			if ($_SESSION['skipavalible'] == true)
+			{
+				$_SESSION['skiptext'] = $jfo->skiptext;
+				$_SESSION['skipbuttontext'] = $jfo->skipbuttontext;
 			}
 		}
 	}

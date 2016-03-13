@@ -1,51 +1,47 @@
 <?php echo $head; ?>
 
-    <div class="pure-g centered-row">
-       <div class="pure-u-1 pure-u-md-1-2">
-        <div class="l-box">
-        <p> <?php
-			echo $_SESSION['fbtext'];
-            //echo _('We offer free WLAN.');
-            //echo ' ';
-            //echo _('We\'d like to ask you to return the favor and check in to our location on Facebook.');
-            //echo ' ';
-            //echo _('So, let your friends know you\'re here and start surfing the web!');
-            ?>
-        </p>
-        </div>
-        </div>
-        <div class="pure-u-1 pure-u-md-1-2">
-            <div class="l-box">
-                <p>
-                    <a class="pure-button pure-button-primary" href="<?php echo $fburl; ?>">
-                        <i class="fa fa-facebook-official fa-lg"></i>
-                        <?php echo _('Connect to Facebook'); ?></a>
-                </p>
-            </div>
-        </div>
-    </div>
+
+<h1><?php echo $_SESSION['titletext']; ?></h1>
 <?php
-if ($_SESSION['acavalible'] == true)
+  if (isset($_SESSION['logoimg']))
+  {?>
+  <img class="pure-img" src="<?php echo $_SESSION['logoimg'] ?>"/>
+
+ <?php } 
+
+  if ($_SESSION['fbavalible'])
+  {
+?>
+
+<p class="offer"> 
+    <?php
+    echo $_SESSION['fbtext'];
+    ?>
+</p>
+<a href="<?php echo $fburl; ?>">
+    <input type="button" value="<?php echo _('Connect to Facebook'); ?>" class="facebook"/>
+</a>
+<?php 
+  }
+   echo $access_code_widget ?>
+
+<?php
+if ($_SESSION['skipavalible'] )
 {
-	?>
-    <div class="pure-g centered-row">
-        <div class="pure-u-1 pure-u-md-1-2">
-            <div class="l-box">
-                <p> <?php
-					echo $_SESSION['actext'];
-                    //echo _('It\'s ok if you do not want to use Facebook.');
-                    //echo ' ';
-                    //echo _('Simply ask the staff at our location for the access code and enter it below.');
-                    ?>
-                </p>
-            </div>
-        </div>
-        <div class="pure-u-1 pure-u-md-1-2">
-            <?php echo $access_code_widget ?>
-        </div>
-    </div>
+?>
+<p class="offer">
+    <?php
+    echo $_SESSION['skiptext'];
+    ?>
+</p>
+<a href="<?php echo $skipurl; ?>">
+    <input type="button" value="<?php echo $_SESSION['skipbuttontext']; ?>" class="skip"/>
+</a>
 <?php
+
 }
 ?>
 
 <?php echo $foot; ?>
+
+

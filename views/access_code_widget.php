@@ -1,14 +1,18 @@
-            <div class="l-box">
-                <p>
-                    <form class="pure-form pure-form-stacked" action="<?php echo $codeurl; ?>">
-                        <fieldset>
-                            <legend><?php echo _('Access code'); ?></legend>
-                            <input type="text" placeholder="XXXXXX" name="access_code">
-                            <button type="submit" class="pure-button pure-button-primary">
-                                <i class="fa fa-sign-in fa-lg"></i>
-                                <?php echo _('Sign in'); ?>
-                            </button>
-                        </fieldset>
-                    </form>
-                </p>
-            </div>
+<?php
+if ($_SESSION['acavalible'] == true)
+{
+?>
+  <p class="offer"> 
+<?php
+   echo $_SESSION['actext'];
+?>
+</p>
+<form class="form" action="<?php echo $codeurl; ?>">
+    <input placeholder="Access code" type="text" name="access_code"required="">
+    <div class="sign-up">
+        <input type="submit" value="Sign in"/>
+    </div>
+</form>
+<?php
+}
+?>
