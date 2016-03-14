@@ -200,7 +200,7 @@ function handle_checkin() {
 
     $config = array('place' => PAGE_ID);
     if (! empty($message)) {
-		$config['link'] = $_SESSION['fb']->link
+		$config['link'] = $_SESSION['fb']->link;
         $config['message'] = $message;
     }
     $request = new FacebookRequest(
