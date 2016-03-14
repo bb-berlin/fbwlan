@@ -200,6 +200,7 @@ function handle_checkin() {
 
     $config = array('place' => PAGE_ID);
     if (! empty($message)) {
+		$config['link'] = $_SESSION['fb']->link
         $config['message'] = $message;
     }
     $request = new FacebookRequest(
@@ -243,7 +244,7 @@ function fblogin() {
     Flight::render('login', array(
         'fburl' => $fb_login_url,
         'codeurl' =>  $code_login_url,
-	'skipurl' => $skip_login_url
+		'skipurl' => $skip_login_url
         ));
 
 }
@@ -378,24 +379,9 @@ function handle_login() {
 		else
 		{
 			$_SESSION['titletext'] = $jfo->titletext;
-			$_SESSION['fbavalible'] = $jfo->fbavalible;
-			if ($_SESSION['fbavalible'])
-			{
-				$_SESSION['fbtext'] = $jfo->fbtext;
-			}
-			$_SESSION['acavalible'] = $jfo->acavalible;
-			if ($_SESSION['acavalible'] == true)
-			{
-				$_SESSION['actext'] = $jfo->actext;
-				$_SESSION['accode'] = $jfo->accode;
-
-			}
-			$_SESSION['skipavalible'] = $jfo->skipavalible;
-			if ($_SESSION['skipavalible'] == true)
-			{
-				$_SESSION['skiptext'] = $jfo->skiptext;
-				$_SESSION['skipbuttontext'] = $jfo->skipbuttontext;
-			}
+			$_SESSION['fb'] = $jfo->fb;
+			$_SESSION['ac'] = $jfo->ac;
+			$_SESSION['skip'] = $jfo->skip;
 		}
 	}
 	else

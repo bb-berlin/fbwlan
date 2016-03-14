@@ -1,11 +1,21 @@
 {
 	"titletext":"WLAN Zugang",
-	"fbavalible":true,
-	"fbtext":"We offer free WLAN. We'd like to ask you to return the favor and check in to our location on Facebook. So, let your friends know you're here and start surfing the web!",
-	"acavalible":false,
-	"actext":"Wenn sie keinen Facebook Account besitzen k&ouml;nnen Sie auch beim Personal nach einen Zugangscode fragen.",
-        "accode":"testing",
-	"skipavalible":"true",
-	"skiptext":"Skip this, I just want internet.",
-	"skipbuttontext":"Skip"
+	"fb":{
+		"avalible":true,
+		"text":"We offer free WLAN. We'd like to ask you to return the favor and check in to our location on Facebook. So, let your friends know you're here and start surfing the web!",
+		"buttontext":"&Uuml;ber Facebook anmelden",
+		"link":"www.beschuetzerbox.de"
+	},
+	"ac":{
+		"avalible":true,
+		"text":"Wenn sie keinen Facebook Account besitzen k&ouml;nnen Sie auch beim Personal nach einen Zugangscode fragen.",
+		"buttontext":"Absenden",
+        "code":"testing"
+		},
+	"skip":{		
+		"avalible":true,
+		"text":"Skip this, I just want internet.",
+		"buttontext":"Skip"
+	}
 }
+
