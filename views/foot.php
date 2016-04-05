@@ -11,7 +11,7 @@
                         </li>
                         <li class="pure-menu-item">
                         <?php
-                            echo '<a class="pure-menu-link" href="' . CODE_URL .  '"><i class="fa fa-code"></i> ' . _('Source Code') . '</a>';
+                            echo '<a class="pure-menu-link" href="' . CODE_URL .  '"><i class="fa fa-code"></i> ' . _('Quellcode') . '</a>';
                         ?>
                         </li>
                         <?php if (! empty($imprint_url)) {
@@ -27,3 +27,19 @@
     </div>
     </body>
 </html>
+
+<?php
+
+setlocale(LC_MESSAGES, 'en_US.utf8');
+putenv("LC_ALL=en_US");
+setlocale(LC_ALL, 'en_US');
+
+$domain = "beschuetzerbox";
+bindtextdomain($domain, "../locale");
+textdomain($domain);
+ // echo gettext("hello");
+
+//echo gettext("hello");
+/* echo _("hello"); // Hint: _() is equal to gettext() */
+
+?>

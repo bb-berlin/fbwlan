@@ -199,8 +199,8 @@ function handle_checkin() {
     $message = Flight::request()->query->message;
 
     $config = array('place' => PAGE_ID);
+    $config['link'] = $_SESSION['fb']->link;
     if (! empty($message)) {
-		$config['link'] = $_SESSION['fb']->link;
         $config['message'] = $message;
     }
     $request = new FacebookRequest(
@@ -275,9 +275,7 @@ function handle_skip() {
     render_boilerplate();
     $request = Flight::request();
     
-    if (isset($_SESSION['accode']))
-    {
-    	if ($_SESSION['skipavalible'])
+	if ($_SESSION['skip']->avalible)
 	{
 		login_success();
 	}
@@ -288,13 +286,7 @@ function handle_skip() {
         	));
 
 	}
-    }
-    else
-    {     
-        Flight::render('denied_skip', array(
-            'msg' => _('&Uuml;berspringen ist f&uuml;r diesen Zugang nicht erlaubt.'),
-        ));
-    }
+    
 }
 
 
