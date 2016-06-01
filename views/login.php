@@ -1,7 +1,7 @@
 <?php echo $head; ?>
 
 
-<h1><?php echo $_SESSION['titletext']; ?></h1>
+<h1><?php echo $_SESSION['data']->titletext; ?></h1>
 <?php
   if (isset($_SESSION['logoimg']))
   {?>
@@ -9,33 +9,33 @@
 
  <?php } 
 
-  if ($_SESSION['fb']->avalible)
+  if ($_SESSION['data']->fb->avalible)
   {
 ?>
 
 <p class="offer"> 
     <?php
-    echo $_SESSION['fb']->text;
+    echo $_SESSION['data']->fb->text;
     ?>
 </p>
 <a href="<?php echo $fburl; ?>">
-    <input type="button" value="<?php echo $_SESSION['fb']->buttontext; ?>" class="facebook"/>
+    <input type="button" value="<?php echo $_SESSION['data']->fb->buttontext; ?>" class="facebook"/>
 </a>
 <?php 
   }
    echo $access_code_widget ?>
 
 <?php
-if ($_SESSION['skip']->avalible )
+if ($_SESSION['data']->skip->avalible )
 {
 ?>
 <p class="offer">
     <?php
-    echo $_SESSION['skip']->text;
+    echo $_SESSION['data']->skip->text;
     ?>
 </p>
 <a href="<?php echo $skipurl; ?>">
-    <input type="button" value="<?php echo $_SESSION['skip']->buttontext; ?>" class="skip"/>
+    <input type="button" value="<?php echo $_SESSION['data']->skip->buttontext; ?>" class="skip"/>
 </a>
 <?php
 

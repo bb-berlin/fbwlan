@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-	<link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'>
+	<!-- <link href='https://fonts.googleapis.com/css?family=Nunito:400,300,700' rel='stylesheet' type='text/css'> -->
 		<?php 
 		if (isset($_SESSION['style']))
 		{?>

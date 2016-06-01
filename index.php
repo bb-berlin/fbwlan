@@ -36,6 +36,7 @@ ini_set('session.cookie_httponly', '1');
 // Load constants defined in config
 require_once('config.php');
 
+
 // HTTPS only!
 if (parse_url(MY_URL, PHP_URL_SCHEME) === "https") {
     ini_set('session.cookie_secure', '1');
@@ -54,10 +55,14 @@ session_set_cookie_params(COOKIE_SESSION_DURATION);
 session_start();
 
 require_once('include/flight/flight/Flight.php');
-
 require_once('tokens.php');
 
 init_token_db();
+require_once "include/piwik/PiwikTracker.php";
+PiwikTracker::$URL = 'http://localhost/piwik/';
+
+$piwikTracker = new PiwikTracker( $idSite = 1 );
+Flight::set('piwik', $piwikTracker);
 
 require_once('handlers/fb_handlers.php');
 

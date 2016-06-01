@@ -61,10 +61,11 @@
                         . 'laws.');
                     ?>
                 </p>
-                <?php if (!empty($extended_privacy_url)) {
+                <?php if (isset($_SESSION['data']->privacy->extended_legal_url)) {
                     echo '<p>';
                     echo _('Please see our') . ' ' . '<a href="'
-                        . $extended_legal_url . '">'
+						. $_SESSION['data']->privacy->extended_legal_url . '">'
+                        //. $extended_legal_url . '">'
                         . _('full privacy policy.') . '</a>';
                     echo ' ';
                     echo _('In particular, other parts of our offerings beyond'.
@@ -75,7 +76,8 @@
                 <?php if (!empty($imprint_url)) {
                     echo '<p>';
                     echo '<a href="'
-                        . $extended_legal_url . '">'
+						. $_SESSION['data']->privacy->extended_legal_url . '">'
+                        //. $extended_legal_url . '">'
                         . _('Imprint') . '</a>';
                     echo '</p>';
                 }

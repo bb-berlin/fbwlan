@@ -200,7 +200,7 @@ body {
 }
 @font-face {
     font-family: "Nunito-Light";
-    src: url(../fonts/Nunito-Light.ttf);
+    src: url(../../fonts/Nunito-Light.ttf);
 }
 .main-content {
     width: 50%;

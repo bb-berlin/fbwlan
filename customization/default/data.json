@@ -2,20 +2,29 @@
 	"titletext":"WLAN Zugang",
 	"fb":{
 		"avalible":true,
-		"text":"We offer free WLAN. We'd like to ask you to return the favor and check in to our location on Facebook. So, let your friends know you're here and start surfing the web!",
+		"text":"Wir bieten innen freies Wlan, wir bitten Sie nur sich über Facebook anzumelden, dass Ihre Freunde wissen das Sie hier sind und surfen.",
 		"buttontext":"&Uuml;ber Facebook anmelden",
-		"link":"www.example.org"
+		"link":"www.example.org",
+		"deniedtext":"Es sieht danach aus als wenn Sie einen Doppelpost durch bet&auml;tigen des Aktualisieren Buttons erstellt haben. Wenn Sie sich nicht &uuml;ber Facebook anmelden m&ouml;chten, fragen die beim Personal nach dem zugangscode",
+		"deniedbutton":"Zur&uuml;ck zum Login" 
 	},
 	"ac":{
 		"avalible":true,
-		"text":"Wenn sie keinen Facebook Account besitzen k&ouml;nnen Sie auch beim Personal nach einen Zugangscode fragen.",
+		"text":"Falscher Zugangscode, wenn sie keinen Facebook Account besitzen k&ouml;nnen Sie auch beim Personal nach einem Zugangscode fragen.",
 		"buttontext":"Absenden",
         "code":"testing"
 		},
 	"skip":{		
 		"avalible":true,
-		"text":"Skip this, I just want internet.",
-		"buttontext":"Skip"
+		"text":"&Uuml;berspringenn und einfach nur surfen.",
+		"buttontext":"&Uuml;berspringen"
+	},
+	"back_to_code_widget":{		
+		"text":"If you do not want to check in, you can still use the access code! Just ask our staff about the Wi-Fi.",
+		"buttontext":"Back"
+	},
+	"privacy":{
+		"extended_legal_url":"www.example.org/agb"
 	}
 }
 

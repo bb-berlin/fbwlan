@@ -42,7 +42,8 @@ Flight::set('retry_url', MY_URL .'login');
 
 
 function render_boilerplate() {
-    Flight::render('head',
+	
+	Flight::render('head',
         array(
             'my_url' => MY_URL,
             'title' => _('WLAN at ') . PAGE_NAME,
@@ -122,6 +123,7 @@ function handle_rerequest_permission() {
 // or an error message if something went wrong.
 function handle_fb_callback() {
     render_boilerplate();
+    
     $helper = new FacebookRedirectLoginHelper(MY_URL . 'fb_callback/');
     try {
         $session = $helper->getSessionFromRedirect();
@@ -153,6 +155,8 @@ function handle_fb_callback() {
         }
     }
     else {
+        $piwikTracker = Flight::get('piwik');
+        $piwikTracker->doTrackPageView("FBDenied");
         Flight::render('denied_fb', array(
             'msg' => _('It looks like you didn\'t login! That\'s ok!'),
         ));
@@ -164,19 +168,22 @@ function handle_checkin() {
     // This happens if we unset the nonce below.
     // Or if the nonce was never set, in which case the user
     // shouldn't be here.
-    $msg1 = _('It looks like you accidentally hit the refresh button or got here by accident.');
-    $msg2 = _('We prevented a double post of your message.');
-
+	load_datafile();
+    //$msg1 = _('It looks like you accidentally hit the refresh button or got here by accident.');
+    //$msg2 = _('We prevented a double post of your message.');
+	
+	
     if (! array_key_exists('FB_CHECKIN_NONCE', $_SESSION)) {
-        Flight::render('denied_fb', array(
-            'msg' => $msg1 . ' ' . $msg2,
+		//load_datafile();    
+		Flight::render('denied_fb', array(
+            'msg' => $_SESSION['data']->fb->deniedtext, //$msg1 . ' '. $msg2,
         ));
         Flight::stop();
     }
     $nonce = $_SESSION['FB_CHECKIN_NONCE'];
     if (empty($nonce)) {
         Flight::render('denied_fb', array(
-            'msg' => $msg1 . ' '. $msg2,
+            'msg' => $_SESSION['data']->fb->deniedtext, //$msg1 . ' '. $msg2,
         ));
         Flight::stop();
     }
@@ -220,6 +227,9 @@ function handle_checkin() {
     }
     $postid = $response->asArray()['id'];
     $posturl = 'https://www.facebook.com/' . $postid;
+    
+    $piwikTracker = Flight::get('piwik');
+    $piwikTracker->doTrackPageView("FBPostSucess");
     Flight::render('checkin',
         array(
             'loginurl' => login_success(False),
@@ -261,24 +271,30 @@ function handle_access_code() {
         Flight::render('denied_code', array(
             'msg' => _('No access code sent.'),
         ));
-    } else if ($code != $_SESSION['accode'] ){//ACCESS_CODE) {
+    } else if ($code != $_SESSION['data']->ac->code ){//ACCESS_CODE) {
         Flight::render('denied_code', array(
-            'msg' => _('Wrong access code.'),
+            'msg' => _($_SESSION['data']->ac->text),
         ));
     } else {
+		$piwikTracker = Flight::get('piwik');
+        $piwikTracker->doTrackPageView("AccessCode");
+		//$piwikTracker->doTrackEvent("AccessCode", "Button", $_SESSION['gw_id']);
         login_success();
     }
 }
 
 function handle_skip() {
-
+	
     render_boilerplate();
+	
     $request = Flight::request();
-    
-    if (isset($_SESSION['accode']))
-    {
-    	if ($_SESSION['skipavalible'])
+    echo "<pre>";
+	echo print_r($_SESSION['data']->skip->avalible);
+	echo "</pre>";
+    if ($_SESSION['data']->skip->avalible)
 	{
+        $piwikTracker = Flight::get('piwik');
+        $piwikTracker->doTrackPageView("SkipButtonForLogin");
 		login_success();
 	}
 	else
@@ -288,13 +304,6 @@ function handle_skip() {
         	));
 
 	}
-    }
-    else
-    {     
-        Flight::render('denied_skip', array(
-            'msg' => _('&Uuml;berspringen ist f&uuml;r diesen Zugang nicht erlaubt.'),
-        ));
-    }
 }
 
 
@@ -325,6 +334,7 @@ function update_session($request) {
 
 // User request
 function handle_login() {
+    load_datafile();
     $request = Flight::request();
     //login/?gw_address=%s&gw_port=%d&gw_id=%s&url=%s
     // If we get called without the gateway parameters, then we better
@@ -336,7 +346,12 @@ function handle_login() {
         Flight::error(new Exception('Gateway parameters not set in login handler!'));
     }
 	// Add for costumization files
-	$folder = "customization/".$_SESSION['gw_id'];
+	//TODO
+    //if (isset($_SESSION['gw_id'])){
+	//	load_datafile();
+	//}
+		
+/*	$folder = "customization/".$_SESSION['gw_id'];
 	if (is_file($folder."/style.css"))
 	{
 		$_SESSION['style'] = $folder."/style.css";
@@ -387,7 +402,7 @@ function handle_login() {
 	else
 	{
 		Flight::error(new Exception('Gateway parameters not set in login handler!'));
-	}
+	}*/
 	
 	
     render_boilerplate();
@@ -397,6 +412,12 @@ function handle_login() {
 
 function login_success($redirect = True) {
     //  http://" . $gw_address . ":" . $gw_port . "/wifidog/auth?token=" . $token
+	
+	$piwikTracker = Flight::get('piwik');
+    $piwikTracker->doTrackPageView("LoginSuccess");
+	//$piwikTracker->doTrackEvent("LoginSuccess", "", $_SESSION['gw_id']);
+	
+	
     $token = make_token();
     $url = 'http://' . $_SESSION['gw_address'] . ':'
         . $_SESSION['gw_port'] . '/wifidog/auth?token=' . $token;
@@ -422,4 +443,106 @@ function handle_privacy() {
 
 function make_nonce() {
     return urlencode(uniqid ('', true));
+}
+
+function load_datafile() {
+	//echo "Call load datafile";
+	$folder="";
+	
+	if (isset($_SESSION['old_gw_id']))
+	{
+		echo "<p>Old GW ID:".$_SESSION['old_gw_id']."</p>";
+        echo "<p>GW ID:".$_SESSION['gw_id']."</p>";
+		
+		if ($_SESSION['old_gw_id'] != $_SESSION['gw_id'])
+		{
+			$_SESSION['old_gw_id'] = $_SESSION['gw_id'];
+			$folder = "customization/".$_SESSION['gw_id'];
+		}
+		else 
+		{
+			// datafile should be loaded
+			//echo "<p>datafile should be loaded</p>";
+			//echo "<pre>";
+			//print_r($_SESSION);
+			//echo "AVALIBLE:" + $_SESSION['data']->skip->avalible;
+			//echo "<pre>";
+			
+			return 0;
+		}
+	}
+	
+	if (isset($_SESSION['gw_id']))
+	{
+		// set foldername with GW ID
+		
+		$folder = "customization/".$_SESSION['gw_id'];
+		echo "<skript> console.log(\"Load data from ".$folder." \")</skript>";
+	}
+	/*if (isset($_SESSION['data']) || ! empty($_SESSION['data'])) {
+		echo "<p>Datafile scheint geladen zu sein:</p>";
+		
+		//echo "<pre>";
+		//print_r($_SESSION);
+		//echo "<pre>";
+		
+		return 0;
+	}*/
+	
+	if (isset($_SESSION['gw_id']) && is_file($folder."/style.css"))
+	{
+		$_SESSION['style'] = $folder."/style.css";
+	}
+	else
+	{
+		$_SESSION['style'] = "customization/default/style.css";
+	}	
+	if (isset($_SESSION['gw_id']) && is_file($folder."/background.jpg"))
+	{
+		$_SESSION['backgroundimg'] = MY_URL . $folder."/background.jpg";
+	}
+	else
+	{
+		$_SESSION['backgroundimg'] = MY_URL . "customization/default/background.jpg";
+	}
+	if (isset($_SESSION['gw_id']) && is_file($folder."/logo.png"))
+	{
+		$_SESSION['logoimg'] = MY_URL . $folder."/logo.png";
+	}
+	else
+	{
+		$_SESSION['logoimg'] = MY_URL . "customization/default/logo.png";
+	}
+	
+	if (isset($_SESSION['gw_id']) && is_file($folder."/data.json"))
+	{
+		$_SESSION['datafile'] = $folder."/data.json";
+	}
+	else
+	{
+		$_SESSION['datafile'] = "customization/default/data.json";
+	}
+	if (isset($_SESSION['datafile']))
+	{
+		$json_file = file_get_contents($_SESSION['datafile']);
+		$jfo = json_decode($json_file);
+		if (!isset($jfo)) 
+			Flight::error(new Exception($_SESSION['datafile'] . " is currupted, check if it is valid json file."));
+		else
+		{
+			$_SESSION['data'] = $jfo;
+		}
+	}
+	else
+	{
+		Flight::error(new Exception('Gateway parameters not set in login handler!'));
+	}
+    if (isset($_SESSION['gw_id']))
+    {
+	    $_SESSION['old_gw_id'] = $_SESSION['gw_id'];
+    }
+	
+	#echo "<pre>";
+	#print_r($_SESSION);
+	#echo "<pre>";
 }
